@@ -24,30 +24,24 @@ function property(target: any, key: string) {
     }
 }
 
-
-function parameterDecorator(target: any, key: string, index: number) {
+function parameterDecorator2(target: any, key: string, index: number) {
     console.log(`Key is ${key} and index is ${index}`);
 }
 
-function model(constructor: Function) {
-    console.log(constructor);
-}
-
-@model
-class Person {
+class Person2 {
     @property
     public firstName: string;
 
     @property
     public salary: number;
 
-    calculateSalary(@parameterDecorator taxes: number, @parameterDecorator discount: number): number {
+    calculateSalary(@parameterDecorator2 taxes: number, @parameterDecorator2 discount: number): number {
         return this.salary * taxes;
     }
 }
 
-const personOb = new Person();
+const personObj = new Person2();
 // set the firstName
-personOb.firstName = "Uzzal Kumar Roy";
+personObj.firstName = "Uzzal Kumar Roy";
 // call the getter
-console.log(personOb.firstName); // Output: Uzzal Kumar Roy
+console.log(personObj.firstName); // Output: Uzzal Kumar Roy

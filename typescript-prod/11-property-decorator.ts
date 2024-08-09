@@ -1,4 +1,4 @@
-function property(target: any, key: string) {
+function propertyDecorator(target: any, key: string) {
     let value = target[key];
     // Replacement getter
     const gettter = function() {
@@ -24,30 +24,13 @@ function property(target: any, key: string) {
     }
 }
 
-
-function parameterDecorator(target: any, key: string, index: number) {
-    console.log(`Key is ${key} and index is ${index}`);
-}
-
-function model(constructor: Function) {
-    console.log(constructor);
-}
-
-@model
-class Person {
-    @property
+class PersonClass {
+    @propertyDecorator
     public firstName: string;
-
-    @property
-    public salary: number;
-
-    calculateSalary(@parameterDecorator taxes: number, @parameterDecorator discount: number): number {
-        return this.salary * taxes;
-    }
 }
 
-const personOb = new Person();
+const personObj1 = new PersonClass();
 // set the firstName
-personOb.firstName = "Uzzal Kumar Roy";
+personObj1.firstName = "Uzzal Kumar Roy";
 // call the getter
-console.log(personOb.firstName); // Output: Uzzal Kumar Roy
+console.log(personObj1.firstName); // Output: Uzzal Kumar Roy

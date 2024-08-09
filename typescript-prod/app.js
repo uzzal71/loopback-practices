@@ -1,59 +1,64 @@
-var __runInitializers = (this && this.__runInitializers) || function (thisArg, initializers, value) {
-    var useValue = arguments.length > 2;
-    for (var i = 0; i < initializers.length; i++) {
-        value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
-    }
-    return useValue ? value : void 0;
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
-    function accept(f) { if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected"); return f; }
-    var kind = contextIn.kind, key = kind === "getter" ? "get" : kind === "setter" ? "set" : "value";
-    var target = !descriptorIn && ctor ? contextIn["static"] ? ctor : ctor.prototype : null;
-    var descriptor = descriptorIn || (target ? Object.getOwnPropertyDescriptor(target, contextIn.name) : {});
-    var _, done = false;
-    for (var i = decorators.length - 1; i >= 0; i--) {
-        var context = {};
-        for (var p in contextIn) context[p] = p === "access" ? {} : contextIn[p];
-        for (var p in contextIn.access) context.access[p] = contextIn.access[p];
-        context.addInitializer = function (f) { if (done) throw new TypeError("Cannot add initializers after decoration has completed"); extraInitializers.push(accept(f || null)); };
-        var result = (0, decorators[i])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
-        if (kind === "accessor") {
-            if (result === void 0) continue;
-            if (result === null || typeof result !== "object") throw new TypeError("Object expected");
-            if (_ = accept(result.get)) descriptor.get = _;
-            if (_ = accept(result.set)) descriptor.set = _;
-            if (_ = accept(result.init)) initializers.unshift(_);
-        }
-        else if (_ = accept(result)) {
-            if (kind === "field") initializers.unshift(_);
-            else descriptor[key] = _;
-        }
-    }
-    if (target) Object.defineProperty(target, contextIn.name, descriptor);
-    done = true;
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
 };
-function log(target, key, descriptor) {
-    console.log("".concat(key, " was called"));
+function property(target, key) {
+    var value = target[key];
+    // Replacement getter
+    var gettter = function () {
+        console.log("Getter for ".concat(key, " returned ").concat(value));
+        return value;
+    };
+    // Replacement setter
+    var setter = function (newVal) {
+        console.log("Set ".concat(key, " to ").concat(newVal));
+        value = newVal;
+    };
+    // Replace the property
+    var isDeleted = delete this[key];
+    if (isDeleted) {
+        Object.defineProperty(target, key, {
+            get: gettter,
+            set: setter,
+            enumerable: true,
+            configurable: true
+        });
+    }
 }
-var Calculator = function () {
-    var _a;
-    var _instanceExtraInitializers = [];
-    var _square_decorators;
-    return _a = /** @class */ (function () {
-            function Calculator() {
-                __runInitializers(this, _instanceExtraInitializers);
-            }
-            // Using the decorator @log
-            Calculator.prototype.square = function (n) {
-                return n * n;
-            };
-            return Calculator;
-        }()),
-        (function () {
-            var _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
-            _square_decorators = [log];
-            __esDecorate(_a, null, _square_decorators, { kind: "method", name: "square", static: false, private: false, access: { has: function (obj) { return "square" in obj; }, get: function (obj) { return obj.square; } }, metadata: _metadata }, null, _instanceExtraInitializers);
-            if (_metadata) Object.defineProperty(_a, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
-        })(),
-        _a;
-}();
+function parameterDecorator(target, key, index) {
+    console.log("Key is ".concat(key, " and index is ").concat(index));
+}
+function model(constructor) {
+    console.log(constructor);
+}
+var Person = /** @class */ (function () {
+    function Person() {
+    }
+    Person.prototype.calculateSalary = function (taxes, discount) {
+        return this.salary * taxes;
+    };
+    __decorate([
+        property
+    ], Person.prototype, "firstName", void 0);
+    __decorate([
+        property
+    ], Person.prototype, "salary", void 0);
+    __decorate([
+        __param(0, parameterDecorator),
+        __param(1, parameterDecorator)
+    ], Person.prototype, "calculateSalary", null);
+    Person = __decorate([
+        model
+    ], Person);
+    return Person;
+}());
+var personOb = new Person();
+// set the firstName
+personOb.firstName = "Uzzal Kumar Roy";
+// call the getter
+console.log(personOb.firstName); // Output: Uzzal Kumar Roy
