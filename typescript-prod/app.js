@@ -1,36 +1,59 @@
-var GenericNumber = /** @class */ (function () {
-    function GenericNumber() {
+var __runInitializers = (this && this.__runInitializers) || function (thisArg, initializers, value) {
+    var useValue = arguments.length > 2;
+    for (var i = 0; i < initializers.length; i++) {
+        value = useValue ? initializers[i].call(thisArg, value) : initializers[i].call(thisArg);
     }
-    return GenericNumber;
-}());
-var myGenericNumber = new GenericNumber();
-myGenericNumber.zeroValue = 0;
-myGenericNumber.add = function (x, y) {
-    return x + y;
+    return useValue ? value : void 0;
 };
-var List = /** @class */ (function () {
-    function List() {
-        this.data = [];
-    }
-    List.prototype.add = function (t) {
-        this.data.push(t);
-    };
-    List.prototype.remove = function (t) {
-        var index = this.data.indexOf(t);
-        if (index > -1) {
-            this.data.splice(index, 1);
+var __esDecorate = (this && this.__esDecorate) || function (ctor, descriptorIn, decorators, contextIn, initializers, extraInitializers) {
+    function accept(f) { if (f !== void 0 && typeof f !== "function") throw new TypeError("Function expected"); return f; }
+    var kind = contextIn.kind, key = kind === "getter" ? "get" : kind === "setter" ? "set" : "value";
+    var target = !descriptorIn && ctor ? contextIn["static"] ? ctor : ctor.prototype : null;
+    var descriptor = descriptorIn || (target ? Object.getOwnPropertyDescriptor(target, contextIn.name) : {});
+    var _, done = false;
+    for (var i = decorators.length - 1; i >= 0; i--) {
+        var context = {};
+        for (var p in contextIn) context[p] = p === "access" ? {} : contextIn[p];
+        for (var p in contextIn.access) context.access[p] = contextIn.access[p];
+        context.addInitializer = function (f) { if (done) throw new TypeError("Cannot add initializers after decoration has completed"); extraInitializers.push(accept(f || null)); };
+        var result = (0, decorators[i])(kind === "accessor" ? { get: descriptor.get, set: descriptor.set } : descriptor[key], context);
+        if (kind === "accessor") {
+            if (result === void 0) continue;
+            if (result === null || typeof result !== "object") throw new TypeError("Object expected");
+            if (_ = accept(result.get)) descriptor.get = _;
+            if (_ = accept(result.set)) descriptor.set = _;
+            if (_ = accept(result.init)) initializers.unshift(_);
         }
-    };
-    List.prototype.asArray = function () {
-        return this.data;
-    };
-    return List;
-}());
-var numbers = new List();
-numbers.add(11);
-numbers.add(12);
-numbers.add(22);
-numbers.add(33);
-numbers.remove(12);
-var numArray = numbers.asArray();
-console.log(numArray);
+        else if (_ = accept(result)) {
+            if (kind === "field") initializers.unshift(_);
+            else descriptor[key] = _;
+        }
+    }
+    if (target) Object.defineProperty(target, contextIn.name, descriptor);
+    done = true;
+};
+function log(target, key, descriptor) {
+    console.log("".concat(key, " was called"));
+}
+var Calculator = function () {
+    var _a;
+    var _instanceExtraInitializers = [];
+    var _square_decorators;
+    return _a = /** @class */ (function () {
+            function Calculator() {
+                __runInitializers(this, _instanceExtraInitializers);
+            }
+            // Using the decorator @log
+            Calculator.prototype.square = function (n) {
+                return n * n;
+            };
+            return Calculator;
+        }()),
+        (function () {
+            var _metadata = typeof Symbol === "function" && Symbol.metadata ? Object.create(null) : void 0;
+            _square_decorators = [log];
+            __esDecorate(_a, null, _square_decorators, { kind: "method", name: "square", static: false, private: false, access: { has: function (obj) { return "square" in obj; }, get: function (obj) { return obj.square; } }, metadata: _metadata }, null, _instanceExtraInitializers);
+            if (_metadata) Object.defineProperty(_a, Symbol.metadata, { enumerable: true, configurable: true, writable: true, value: _metadata });
+        })(),
+        _a;
+}();

@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "dev": "tsc app.ts && node app.js"
+    "dev": "tsc --target ES5 --experimentalDecorators app.ts && node app.js"
   },
   "keywords": [],
   "author": "",
